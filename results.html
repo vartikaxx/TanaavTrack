@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TanaavTrack - Your Results</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #8B4513, #D2B48C, #FFF8DC);
+            background-size: 400% 400%;
+            min-height: 100vh;
+            color: #4A3728;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(139, 69, 19, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(210, 180, 140, 0.3);
+        }
+
+        h1, h2 {
+            color: #8B4513;
+            text-align: center;
+        }
+
+        .stress-score {
+            text-align: center;
+            font-size: 48px;
+            margin: 20px 0;
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                #27ae60 0%,
+                #f39c12 50%,
+                #c0392b 100%
+            );
+            box-shadow: 0 10px 20px rgba(139, 69, 19, 0.2);
+        }
+
+        .stress-score::before {
+            content: '';
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .score-value {
+            position: relative;
+            z-index: 1;
+            font-size: 48px;
+            font-weight: bold;
+            color: #8B4513;
+        }
+
+        .recommendations {
+            margin-top: 30px;
+        }
+
+        .recommendation-section {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(139, 69, 19, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .recommendation-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .recommendation-section h3 {
+            color: #8B4513;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 15px;
+            border-bottom: 1px solid rgba(139, 69, 19, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        .media-link {
+            color: #8B4513;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .media-link:hover {
+            color: #D2691E;
+        }
+
+        .back-button {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #8B4513, #D2691E);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(139, 69, 19, 0.2);
+        }
+
+        .stress-level {
+            text-align: center;
+            font-size: 24px;
+            margin: 20px 0;
+        }
+
+        .low-stress { color: #27ae60; }
+        .medium-stress { color: #f39c12; }
+        .high-stress { color: #c0392b; }
+
+        .breathing-exercise {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+        }
+
+        .breathing-circle {
+            width: 100px;
+            height: 100px;
+            background: #8B4513;
+            border-radius: 50%;
+            margin: 0 auto;
+            animation: breathe 8s infinite;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+        }
+
+        .timer {
+            font-size: 24px;
+            margin: 10px 0;
+            color: #8B4513;
+        }
+
+        .exercise-controls {
+            margin: 10px 0;
+        }
+
+        .exercise-button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 25px;
+            background: #8B4513;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .exercise-button:hover {
+            background: #D2691E;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Stress Analysis Results</h1>
+        
+        <div class="stress-score">
+            <div class="score-value">{{ stress_score }}%</div>
+        </div>
+        
+        <div class="stress-level">
+            {% if stress_score < 33 %}
+                <span class="low-stress">Low Stress Level</span>
+            {% elif stress_score < 60 %}
+                <span class="medium-stress">Moderate Stress Level</span>
+            {% else %}
+                <span class="high-stress">High Stress Level</span>
+            {% endif %}
+        </div>
+
+        <div class="recommendations">
+            <h2>Personalized Recommendations</h2>
+            
+            <div class="recommendation-section">
+                <h3>🎵 Recommended Songs</h3>
+                <ul>
+                    {% if stress_score < 33 %}
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=ZbZSe6N_BXs" target="_blank" class="media-link">
+                                <span class="play-icon">▶️</span>
+                                Happy - Pharrell Williams
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=KQetemT1sWc" target="_blank" class="media-link">
+                                <span class="play-icon">▶️</span>
+                                Here Comes the Sun - The Beatles
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=zaGUr6wzyT8" target="_blank" class="media-link">
+                                <span class="play-icon">▶️</span>
+                                Three Little Birds - Bob Marley
+                            </a>
+                        </li>
+                    {% elif stress_score < 60 %}
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=UfcAVejslrU" target="_blank" class="media-link">
+                                <span class="play-icon">▶️</span>
+                                Weightless - Marconi Union
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=7maJOI3QMu0" target="_blank" class="media-link">
+                                <span class="play-icon">▶️</span>
+                                River Flows in You - Yiruma
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=V1bFr2SWP1I" target="_blank" class="media-link">
+                                <span class="play-icon">▶️</span>
+                                Somewhere Over the Rainbow - Israel Kamakawiwoole
+                            </a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=WNcsUNKlAKw" target="_blank" class="media-link">
+                                <span class="play-icon">▶️</span>
+                                Clair de Lune - Debussy
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=S-Xm7s9eGxU" target="_blank" class="media-link">
+                                <span class="play-icon">▶️</span>
+                                Gymnopédie No.1 - Erik Satie
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=f77SKdyn-1Y" target="_blank" class="media-link">
+                                <span class="play-icon">▶️</span>
+                                Ocean Waves White Noise
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="recommendation-section">
+                <h3>🎬 Recommended Movies</h3>
+                <ul>
+                    {% if stress_score < 33 %}
+                        <li>
+                            <a href="https://www.imdb.com/title/tt0359950/" target="_blank" class="media-link">
+                                <span class="movie-icon">🎥</span>
+                                The Secret Life of Walter Mitty
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.imdb.com/title/tt2948372/" target="_blank" class="media-link">
+                                <span class="movie-icon">🎥</span>
+                                Soul
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.imdb.com/title/tt1675434/" target="_blank" class="media-link">
+                                <span class="movie-icon">🎥</span>
+                                The Intouchables
+                            </a>
+                        </li>
+                    {% elif stress_score < 60 %}
+                        <li>
+                            <a href="https://www.imdb.com/title/tt0479143/" target="_blank" class="media-link">
+                                <span class="movie-icon">🎥</span>
+                                The Pursuit of Happyness
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.imdb.com/title/tt0319061/" target="_blank" class="media-link">
+                                <span class="movie-icon">🎥</span>
+                                Big Fish
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.imdb.com/title/tt0449059/" target="_blank" class="media-link">
+                                <span class="movie-icon">🎥</span>
+                                Little Miss Sunshine
+                            </a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="https://www.imdb.com/title/tt2096673/" target="_blank" class="media-link">
+                                <span class="movie-icon">🎥</span>
+                                Inside Out
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.imdb.com/title/tt0119217/" target="_blank" class="media-link">
+                                <span class="movie-icon">🎥</span>
+                                Good Will Hunting
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.imdb.com/title/tt0097165/" target="_blank" class="media-link">
+                                <span class="movie-icon">🎥</span>
+                                Dead Poets Society
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="recommendation-section">
+                <h3>🌟 Recommended Activities</h3>
+                <ul>
+                    {% for activity in recommendations.activities %}
+                        <li>
+                            <span class="activity-icon">✨</span>
+                            {{ activity }}
+                        </li>
+                    {% endfor %}
+                </ul>
+                
+                <div class="breathing-exercise">
+                    <h4>Guided Breathing Exercise</h4>
+                    <div class="timer">5:00</div>
+                    <div class="breathing-circle">Breathe</div>
+                    <div class="exercise-controls">
+                        <button class="exercise-button" onclick="startBreathing()">Start</button>
+                        <button class="exercise-button" onclick="pauseBreathing()">Pause</button>
+                        <button class="exercise-button" onclick="resetBreathing()">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="/" class="back-button">Take the Test Again</a>
+    </div>
+
+    <script>
+        let timer;
+        let timeLeft = 300; // 5 minutes in seconds
+        let isBreathing = false;
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.querySelector('.timer').textContent = 
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function startBreathing() {
+            if (!isBreathing) {
+                isBreathing = true;
+                timer = setInterval(() => {
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                        updateTimer();
+                    } else {
+                        clearInterval(timer);
+                        isBreathing = false;
+                    }
+                }, 1000);
+            }
+        }
+
+        function pauseBreathing() {
+            clearInterval(timer);
+            isBreathing = false;
+        }
+
+        function resetBreathing() {
+            clearInterval(timer);
+            isBreathing = false;
+            timeLeft = 300;
+            updateTimer();
+        }
+    </script>
+</body>
+</html> 

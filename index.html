@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TanaavTrack - Stress Assessment</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #8B4513, #D2B48C, #FFF8DC);
+            background-size: 400% 400%;
+            min-height: 100vh;
+            color: #4A3728;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(139, 69, 19, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(210, 180, 140, 0.3);
+        }
+
+        h1 {
+            color: #8B4513;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(139, 69, 19, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(139, 69, 19, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .form-group:hover {
+            transform: translateY(-2px);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #8B4513;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgba(210, 180, 140, 0.3);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            color: #4A3728;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            border-color: #8B4513;
+            outline: none;
+            box-shadow: 0 0 5px rgba(139, 69, 19, 0.2);
+        }
+
+        input[type="submit"] {
+            background: linear-gradient(45deg, #8B4513, #D2691E);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        input[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(139, 69, 19, 0.2);
+        }
+
+        .error {
+            color: #c0392b;
+            font-size: 0.9em;
+            margin-top: 5px;
+            padding: 5px;
+            background: rgba(192, 57, 43, 0.1);
+            border-radius: 4px;
+        }
+
+        .progress-container {
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(139, 69, 19, 0.1);
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 10px;
+            background: linear-gradient(45deg, #8B4513, #D2691E);
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+
+        .section-title {
+            color: #8B4513;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(210, 180, 140, 0.3);
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238B4513' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+            padding-right: 2.5em;
+        }
+
+        select:hover {
+            border-color: #8B4513;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .form-group {
+                padding: 15px;
+            }
+        }
+    </style>
+    <script>
+        function updateProgress() {
+            const totalFields = document.querySelectorAll('input, select').length - 1; // Exclude submit button
+            const filledFields = document.querySelectorAll('input:not([type="submit"]):valid, select:valid').length;
+            const progress = (filledFields / totalFields) * 100;
+            document.querySelector('.progress-bar').style.width = progress + '%';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.addEventListener('change', updateProgress);
+                input.addEventListener('input', updateProgress);
+            });
+            updateProgress(); // Initial progress check
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Stress Assessment Form</h1>
+        
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+
+        <form method="POST" onchange="updateProgress()">
+            {{ form.csrf_token }}
+            
+            <div class="section-title">Personal Information</div>
+            <div class="form-group">
+                {{ form.age.label }}
+                {{ form.age(class="form-control") }}
+                {% if form.age.errors %}
+                    {% for error in form.age.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.gender.label }}
+                {{ form.gender(class="form-control") }}
+                {% if form.gender.errors %}
+                    {% for error in form.gender.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="section-title">Work Information</div>
+            <div class="form-group">
+                {{ form.job_role.label }}
+                {{ form.job_role(class="form-control") }}
+                {% if form.job_role.errors %}
+                    {% for error in form.job_role.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.industry.label }}
+                {{ form.industry(class="form-control") }}
+                {% if form.industry.errors %}
+                    {% for error in form.industry.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.years_of_experience.label }}
+                {{ form.years_of_experience(class="form-control") }}
+                {% if form.years_of_experience.errors %}
+                    {% for error in form.years_of_experience.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="section-title">Work Environment</div>
+            <div class="form-group">
+                {{ form.work_location.label }}
+                {{ form.work_location(class="form-control") }}
+                {% if form.work_location.errors %}
+                    {% for error in form.work_location.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.hours_worked_per_week.label }}
+                {{ form.hours_worked_per_week(class="form-control") }}
+                {% if form.hours_worked_per_week.errors %}
+                    {% for error in form.hours_worked_per_week.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.virtual_meetings.label }}
+                {{ form.virtual_meetings(class="form-control") }}
+                {% if form.virtual_meetings.errors %}
+                    {% for error in form.virtual_meetings.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="section-title">Well-being Metrics</div>
+            <div class="form-group">
+                {{ form.work_life_balance.label }}
+                {{ form.work_life_balance(class="form-control") }}
+                {% if form.work_life_balance.errors %}
+                    {% for error in form.work_life_balance.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.mental_health_resources.label }}
+                {{ form.mental_health_resources(class="form-control") }}
+                {% if form.mental_health_resources.errors %}
+                    {% for error in form.mental_health_resources.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.productivity_change.label }}
+                {{ form.productivity_change(class="form-control") }}
+                {% if form.productivity_change.errors %}
+                    {% for error in form.productivity_change.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.social_isolation.label }}
+                {{ form.social_isolation(class="form-control") }}
+                {% if form.social_isolation.errors %}
+                    {% for error in form.social_isolation.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.remote_work_satisfaction.label }}
+                {{ form.remote_work_satisfaction(class="form-control") }}
+                {% if form.remote_work_satisfaction.errors %}
+                    {% for error in form.remote_work_satisfaction.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.company_support.label }}
+                {{ form.company_support(class="form-control") }}
+                {% if form.company_support.errors %}
+                    {% for error in form.company_support.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="section-title">Lifestyle Factors</div>
+            <div class="form-group">
+                {{ form.physical_activity.label }}
+                {{ form.physical_activity(class="form-control") }}
+                {% if form.physical_activity.errors %}
+                    {% for error in form.physical_activity.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.sleep_quality.label }}
+                {{ form.sleep_quality(class="form-control") }}
+                {% if form.sleep_quality.errors %}
+                    {% for error in form.sleep_quality.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.region.label }}
+                {{ form.region(class="form-control") }}
+                {% if form.region.errors %}
+                    {% for error in form.region.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+    </div>
+</body>
+</html> 
